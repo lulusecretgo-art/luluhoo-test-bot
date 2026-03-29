@@ -1,27 +1,26 @@
 import discord
+import os
 from discord.ext import commands
 
-# Configuration des permissions (ce qu'on a coché sur le portail)
-intents = discord.Intents.default()
-intents.message_content = True  # Pour lire les messages
-intents.members = True          # Pour voir les membres
+# On demande au système d'aller chercher le token dans les variables secrètes
+TOKEN = os.getenv('DISCORD_TOKEN')
 
-# On crée le bot avec un préfixe (ex: !test)
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f'✅ Le bot de test est en ligne : {bot.user.name}')
-    print('------')
+    print(f'✅ Bot de test prêt : {bot.user.name}')
 
 @bot.command()
-async def coucou(ctx):
-    await ctx.send(f"Salut {ctx.author.mention} ! Ton bot de test fonctionne parfaitement. 🚀")
+async def test(ctx):
+    await ctx.send("Le laboratoire de Luluhoo est opérationnel ! 🧪")
 
-@bot.command()
-async def ping(ctx):
-    latence = round(bot.latency * 1000)
-    await ctx.send(f"🏓 Pong ! ({latence}ms)")
-
-# REMPLACE 'TON_TOKEN_ICI' par le jeton que tu as copié
-bot.run('TOKEN_SECRET_ICI')
+# Si on trouve le token, on lance le bot
+if TOKEN:
+    bot.run(TOKEN)
+else:
+    print("❌ Erreur : Le token est introuvable dans les secrets.")
