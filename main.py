@@ -1,26 +1,23 @@
 import discord
 import os
 from discord.ext import commands
+from dotenv import load_dotenv
 
-# On demande au système d'aller chercher le token dans les variables secrètes
+# On charge le token depuis le fichier .env
+load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.default()
 intents.message_content = True
-intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f'✅ Bot de test prêt : {bot.user.name}')
+    print(f'✅ Le bot de test est en ligne : {bot.user.name}')
 
 @bot.command()
-async def test(ctx):
-    await ctx.send("Le laboratoire de Luluhoo est opérationnel ! 🧪")
+async def coucou(ctx):
+    await ctx.send("Coucou ! Ton bot tourne en local sur ton PC ! 💻🚀")
 
-# Si on trouve le token, on lance le bot
-if TOKEN:
-    bot.run(TOKEN)
-else:
-    print("❌ Erreur : Le token est introuvable dans les secrets.")
+bot.run(TOKEN)
